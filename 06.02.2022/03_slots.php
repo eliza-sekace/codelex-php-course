@@ -11,33 +11,15 @@ $playerStartMoney = readline('Input money: ');
 $oneSpinPrice = readline('Your money: ' . $playerStartMoney . '$ Write one spin price: ');
 $winCoefficient = 2;
 
-//get winnerCombos data:
-$winnerComboData = '';
-if ($gameBoardRows == 3 && $gameBoardColumns == 3) {
-    $winnerComboData = file_get_contents("3x3winningcombos.txt");
-} else if ($gameBoardRows == 4 && $gameBoardColumns == 4) {
-    $winnerComboData = file_get_contents("4x4winningcombos.txt");
-} else {
-    echo "Sorry! Only 3x3 or 4x4 slots are available!";
-    exit;
-}
-$winnerCombosData = explode("|", $winnerComboData);
-$winnerCombos = [];
 
-foreach ($winnerCombosData as $combo) {
-    $winnerCombinations = [];
-    $combination = explode(";", $combo);
-    foreach ($combination as $cell) {
-        $oneCombo = [];
-        $combination = explode(",", $cell);
-        $integerIDs = array_map(function ($value) {
-            return (int)$value;
-        }, $combination);
-        $oneCombo[] = $integerIDs;
-        $winnerCombinations[] = $oneCombo;
-    }
-    $winnerCombos[] = array_merge(...$winnerCombinations);
-}
+$winnerCombos = [
+    [[0, 0], [0, 1], [0, 2], [0, 3]],
+    [[1, 0], [1, 1], [1, 2], [1, 3]],
+    [[2, 0], [2, 1], [2, 2], [2, 3]],
+    [[3, 0], [3, 1], [3, 2], [3, 3]],
+    [[0, 0], [1, 1], [2, 2], [3, 3]],
+    [[3, 0], [2, 1], [1, 2], [0, 3]],
+];
 
 
 function getWinner(array $gameBoard, array $winnerCombos, array $slotElements)
@@ -56,7 +38,6 @@ function getWinner(array $gameBoard, array $winnerCombos, array $slotElements)
     }
     return $winningPoints;
 }
-
 
 
 while ($playerStartMoney >= $oneSpinPrice) {
